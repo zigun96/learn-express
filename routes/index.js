@@ -3,8 +3,13 @@ const express = require('express');
 const router = express.Router();
 
 // GET / 라우터
-router.get('/', (req, res) => {
-    res.send('Hello, Express');
+router.get('/', (req, res, next) => {
+  res.render('index', { title: 'Express' });
 });
+
+// 배포할 내용 ?
+router.get('/main', (_, res) => {
+  res.render('main',)
+})
 
 module.exports = router;

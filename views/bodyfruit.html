@@ -1,0 +1,6 @@
+<ul>
+  {% set fruits = ['사과', '배', '오렌지', '바나나', '복숭아'] %}
+  {% for item in fruits %}
+  <ul>{{loop.index}}.{{item}}</ul>
+  {% endfor %}
+</ul>

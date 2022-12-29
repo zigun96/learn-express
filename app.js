@@ -13,21 +13,35 @@ app.use(morgan('dev'));
 app.use('/', express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
-app.use(session({
-  resave: false,
-  saveUninitialized: false,
-  secret: process.env.COOKIE_SECRET,
-  cookie: {
-    httpOnly: true,
-    secure: false,
-  },
-  name: 'session-cookie',
-}));
+app.use(
+  session({
+    resave: false,
+    saveUninitialized: false,
+    secret: process.env.COOKIE_SECRET,
+    cookie: {
+      httpOnly: true,
+      secure: false,
+    },
+    name: 'session-cookie',
+  })
+);
+
+/* 로그인 미들웨어 */
+app.post('/login', (req, res) => {
+  let { username } = req.body;
+  req.session.user = { username };
+  // res.send('로그인 성공');
+  res.redirect('/');
+});
 
 /* 전처리 미들웨어 */
 app.use((req, res, next) => {
   console.log('모든 요청에 다 실행됩니다.');
-  next();
+  if (req.session.user === undefined) {
+    res.redirect('login.html');
+  } else {
+    next();
+  }
 });
 
 /* 라우트 미들웨어 */
